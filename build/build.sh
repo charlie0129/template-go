@@ -91,8 +91,9 @@ entry_file="$@"
 if [ ! -f "$@" ]; then
   build_dir="$@"
   entry_file="."
-  # Must resolve OUTPUT to an absolute path
-  OUTPUT="$(realpath "${OUTPUT}")"
+  # Must resolve OUTPUT to an absolute path. The fallback is because
+  # on macOS, realpath fails if the file does not exist yet.
+  OUTPUT="$(realpath "${OUTPUT}" || echo "${OUTPUT}")"
 fi
 
 go build \
